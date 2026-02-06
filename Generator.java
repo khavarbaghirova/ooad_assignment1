@@ -7,6 +7,7 @@
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Generator {  
 
@@ -17,6 +18,21 @@ public class Generator {
         ArrayList<Double> numbers = new ArrayList<>();
         
         //Creates and returns an ArrayList of n random numbers using one of the three random number generators
+        for (int i = 0; i < n; i++) {
+        double val = 0;
+
+            if (randNumGen == 1) {
+                val = rand.nextDouble(); // java.util.Random
+            } 
+            else if (randNumGen == 2) {
+                val = Math.random(); // Math.random()
+            } 
+            else if (randNumGen == 3) {
+                val = ThreadLocalRandom.current().nextDouble(); // ThreadLocalRandom
+            }
+
+            numbers.add(val);
+        }
 
         return numbers;
     }
@@ -39,6 +55,8 @@ public class Generator {
     public void execute() {
         
         //Calls the populate, statistics, and display methods for all combinations of n values and random number generators (total 9 results)
+        ArrayList<Double> test = populate(5, 1);
+        System.out.println(test);
         
     }
 
