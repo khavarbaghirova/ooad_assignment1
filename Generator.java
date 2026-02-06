@@ -43,20 +43,86 @@ public class Generator {
         
         //Calculates the number of elements (n), mean, sample standard deviation, minimum, and maximum, and returns the results
         
+        
+        int n = randomValues.size();         
+        double sum = 0;
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+
+        //find sum, min, max
+        for (double value : randomValues) {
+            sum += value;
+
+            if (value < min) min = value;
+            if (value > max) max = value;
+        }
+
+        double mean = sum / n;
+
+        //compute sample standard deviation
+        double varSum = 0;
+        for (double value : randomValues) {
+            varSum += Math.pow(value - mean, 2);
+        }
+
+        double stddev = Math.sqrt(varSum / (n - 1)); 
+
+        //store results in required order
+        results.add((double) n);
+        results.add(mean);
+        results.add(stddev);
+        results.add(min);
+        results.add(max);
         return results;
     }
 
     public void display(ArrayList<Double> results, boolean headerOn) {
 
         //Displays the results in a tabular format in the system console, with or without a header
-        
+         if (headerOn) {
+            System.out.printf("%-15s %-15s %-15s %-15s %-15s%n",
+                    "n", "Mean", "StdDev", "Min", "Max");
+        }
+
+        System.out.printf("%-15.0f %-15.6f %-15.6f %-15.6f %-15.6f%n",
+                results.get(0),  // n
+                results.get(1),  // mean
+                results.get(2),  // stddev
+                results.get(3),  // min
+                results.get(4)); // max
     }
 
     public void execute() {
         
         //Calls the populate, statistics, and display methods for all combinations of n values and random number generators (total 9 results)
-        ArrayList<Double> test = populate(5, 1);
-        System.out.println(test);
+    
+        int[] sampleSizes = {10, 1000, 100000};
+
+        //loop through generator types: 1 = Random, 2 = Math.random, 3 = ThreadLocalRandom
+        for (int gen = 1; gen <= 3; gen++) {
+
+            //print generator type header
+            String genName = (gen == 1) ? "java.util.Random" :
+                            (gen == 2) ? "Math.random()" :
+                                        "ThreadLocalRandom";
+            System.out.println("\nGenerator: " + genName);
+
+            boolean headerOn = true; //print table header once per generator
+
+            for (int n : sampleSizes) {
+
+                //generate numbers
+                ArrayList<Double> data = populate(n, gen);
+
+                //compute statistics
+                ArrayList<Double> stats = statistics(data);
+
+                //display results
+                display(stats, headerOn);
+
+                headerOn = false; //only print header once per generator
+        }
+    }
         
     }
 
