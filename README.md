@@ -47,6 +47,6 @@ The program produces 9 result sets (3 generators × 3 sample sizes). As the samp
 
 
 ## Author
-Khavar Baghirova 
-CSCI-3612 
-CRN: 20964 
+[Khavar Baghirova ]
+[CSCI-3612] 
+[CRN: 20964]
